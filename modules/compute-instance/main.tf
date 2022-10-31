@@ -1,15 +1,6 @@
 # Copyright (c) 2018, 2021 Oracle Corporation and/or affiliates.  All rights reserved.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl
 
-terraform {
-  required_version = ">= 0.12" // terraform version below 0.12 is not tested/supported with this module
-  required_providers {
-    oci = {
-      version = ">= 3.27" // force downloading oci-provider compatible with terraform v0.12
-    }
-  }
-}
-
 // Get all the Availability Domains for the region and default backup policies
 data "oci_identity_availability_domains" "ad" {
   compartment_id = var.compartment_ocid
@@ -78,8 +69,8 @@ resource "oci_core_instance" "instance" {
   shape_config {
     // If shape name contains ".Flex" and instance_flex inputs are not null, use instance_flex inputs values for shape_config block
     // Else use values from data.oci_core_shapes.current_ad for var.shape
-    memory_in_gbs = local.shape_is_flex == true && var.instance_flex_memory_in_gbs != null ? var.instance_flex_memory_in_gbs : local.shapes_config[var.shape]["memory_in_gbs"]
-    ocpus         = local.shape_is_flex == true && var.instance_flex_ocpus != null ? var.instance_flex_ocpus : local.shapes_config[var.shape]["ocpus"]
+    memory_in_gbs             = local.shape_is_flex == true && var.instance_flex_memory_in_gbs != null ? var.instance_flex_memory_in_gbs : local.shapes_config[var.shape]["memory_in_gbs"]
+    ocpus                     = local.shape_is_flex == true && var.instance_flex_ocpus != null ? var.instance_flex_ocpus : local.shapes_config[var.shape]["ocpus"]
     baseline_ocpu_utilization = var.baseline_ocpu_utilization
   }
 

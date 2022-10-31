@@ -1,7 +1,6 @@
 
 module "compute-instance" {
-  source                      = "oracle-terraform-modules/compute-instance/oci"
-  version                     = "2.4.0-RC1"
+  source                      = "./modules/compute-instance"
   compartment_ocid            = var.compartment_ocid
   ad_number                   = 1
   instance_count              = var.master_count
@@ -19,7 +18,7 @@ module "compute-instance" {
 }
 
 module "main_vcn" {
-  source                   = "oracle-terraform-modules/vcn/oci"
+  source                   = "./modules/main_vcn"
   compartment_id           = var.compartment_ocid
   lockdown_default_seclist = false
   create_internet_gateway  = true
