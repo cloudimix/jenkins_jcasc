@@ -1,0 +1,13 @@
+---
+- name: Jenkins installation
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Run "docker-compose up"
+      community.docker.docker_compose:
+        project_src: /home/{{ ansible_user }}/JCasC
+        files:
+          - docker-compose.yml
+        build: true
+        state: present

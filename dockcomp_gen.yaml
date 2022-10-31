@@ -1,0 +1,10 @@
+---
+- name: DC file generating
+  hosts: localhost
+  gather_facts: false
+  become: true
+  tasks:
+    - name: docker-compose file generating
+      template:
+        src: docker-compose.yml.j2
+        dest: "{{ compose_path }}"

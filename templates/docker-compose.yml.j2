@@ -10,9 +10,9 @@ services:
       - 80:8080
       - 50000:50000
     volumes:
-      - jenkins_home:/var/jenkins_home
-      - ./casc_configs:/var/jenkins_conf
+      - /home/{{ ansible_user }}/jenkins_home:/var/jenkins_home
+      - /home/{{ ansible_user }}/jenkins_home/jenkins_conf:/var/jenkins_conf
     environment:
-      - CASC_JENKINS_CONFIG=/var/jenkins_conf/jenkins.yaml
+      - CASC_JENKINS_CONFIG=/home/{{ ansible_user }}/jenkins_home/jenkins_conf/jenkins.yaml
 volumes:
   jenkins_home:

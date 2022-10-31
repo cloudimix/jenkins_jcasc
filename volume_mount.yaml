@@ -1,0 +1,30 @@
+---
+- name: Create fs on BVs
+  hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: File system ext4 creating...
+      community.general.system.filesystem:
+        fstype: ext4
+        dev: "{{ item.src }}"
+      with_items:
+        - "{{ mounts }}"
+
+    - name: Mount BVs to the corresponding folders
+      ansible.posix.mount:
+        src: "{{ item.src }}"
+        path: "{{ item.path }}"
+        opts: "defaults,_netdev,nofail"
+        state: mounted
+        fstype: ext4
+        passno: 2
+      with_items:
+        - "{{ mounts }}"
+
+    - name: Chown for jenkins_home
+      file:
+        path: "{{ dir_path }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: 0777
