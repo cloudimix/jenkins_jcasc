@@ -13,6 +13,6 @@ services:
       - /home/{{ ansible_user }}/jenkins_home:/var/jenkins_home
       - /home/{{ ansible_user }}/jenkins_home/jenkins_conf:/var/jenkins_conf
     environment:
-      - CASC_JENKINS_CONFIG=/home/{{ ansible_user }}/jenkins_home/jenkins_conf/jenkins.yaml
+      - CASC_JENKINS_CONFIG=/var/jenkins_conf
 volumes:
   jenkins_home:

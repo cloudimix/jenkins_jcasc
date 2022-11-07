@@ -8,7 +8,7 @@
         src: ./JCasC
         dest: /home/{{ ansible_user }}/
 
-    - name: Ensures {{project_root}}/conf dir exists
+    - name: Ensures /home/{{ ansible_user }}/jenkins_home/jenkins_conf dir exists
       file:
         path: /home/{{ ansible_user }}/jenkins_home/jenkins_conf
         mode: 0777

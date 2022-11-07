@@ -1,0 +1,38 @@
+---
+- name: TLS create
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Dir create
+      file:
+        path: /home/{{ ansible_user }}/.tls
+        state: directory
+        mode: 775
+
+    - name: Create private key (RSA, 4096 bits)
+      community.crypto.openssl_privatekey:
+        path: "{{ cert_key_path }}certificate.key"
+
+    - name: Create simple self-signed certificate
+      community.crypto.x509_certificate:
+        path: "{{ cert_key_path }}certificate.pem"
+        privatekey_path: "{{ cert_key_path }}certificate.key"
+        provider: selfsigned
+
+    - name: Create certificate signing request (CSR) for self-signed certificate
+      community.crypto.openssl_csr_pipe:
+        privatekey_path: "{{ cert_key_path }}certificate.key"
+        common_name: cloudimix.com
+        organization_name: Dimi, Inc.
+        subject_alt_name:
+          - "DNS:cloudimix.com"
+          - "DNS:www.cloudimix.com"
+      register: csr
+
+    - name: Create self-signed certificate from CSR
+      community.crypto.x509_certificate:
+        path: "{{ cert_key_path }}certificate.pem"
+        csr_content: "{{ csr.csr }}"
+        privatekey_path: "{{ cert_key_path }}certificate.key"
+        provider: selfsigned

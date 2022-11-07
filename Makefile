@@ -13,11 +13,12 @@ infrastructure:
 
 .PHONY: docker
 docker:
-	ansible-playbook dockcomp_gen.yaml
+#	ansible-playbook -i dynamic_inventory.py cert_creation.yaml -vv
 	ansible-playbook -i dynamic_inventory.py play_docker_install_role.yaml -vv
 
 .PHONY: jcasc
 jcasc:
+	ansible-playbook dockcomp_gen.yaml
 	ansible-playbook -i dynamic_inventory.py jenkins_files_copy.yaml -vv
 	ansible-playbook -i dynamic_inventory.py jenkins_DC_up_build.yaml -vv
 
