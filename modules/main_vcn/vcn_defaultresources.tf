@@ -74,6 +74,15 @@ resource "oci_core_default_security_list" "restore_default" {
       min = 8080
     }
   }
+  ingress_security_rules {
+    description = "http"
+    protocol    = "6"
+    source      = "0.0.0.0/0"
+    tcp_options {
+      max = 51820
+      min = 51820
+    }
+  }
   dynamic "ingress_security_rules" {
     //allow all ICMP from all VCN CIDRs
     for_each = oci_core_vcn.vcn.cidr_blocks

@@ -1,5 +1,5 @@
 ace-editor:latest
-analysis-core:latest
+analysis-core:1.96
 analysis-model-api:latest
 antisamy-markup-formatter:latest
 apache-httpcomponents-client-4-api:latest
@@ -13,6 +13,9 @@ configuration-as-code:latest
 copyartifact:latest
 credentials:latest
 credentials-binding:latest
+docker-plugin:latest
+docker-commons:latest
+docker-workflow:latest
 data-tables-api:latest
 display-url-api:latest
 durable-task:latest
@@ -46,6 +49,7 @@ matrix-project:latest
 maven-plugin:latest
 momentjs:latest
 parameterized-trigger:latest
+pipeline-groovy-lib:613.v9c41a_160233f
 pipeline-build-step:latest
 pipeline-graph-analysis:latest
 pipeline-input-step:latest

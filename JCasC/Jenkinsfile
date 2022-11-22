@@ -1,14 +1,18 @@
 pipeline {
-    agent {
-        label 'master-label'
-    }
+  agent any
 
     stages {
-        stage('Checkout') {
+        stage('Prepare') {
             steps {
-                dir(env.CASC_REPO) {
-                    checkout scm
-                }
+                sh 'echo $CASC_REPO'
+                sh 'rm -rf ./* ./.* &>/dev/null'
+                sh 'git clone -b dev https://github.com/cloudimix/jenkins_jcasc.git .'
+                     }
+        }
+        stage('Create') {
+            steps {
+                sh 'uname -a >> myinfo;pwd >> myinfo;whoami >> myinfo'
+                sh 'ls -la >> myinfo'
             }
         }
     }
