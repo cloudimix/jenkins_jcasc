@@ -1,4 +1,5 @@
 #!/bin/bash
+.ONESHELL:
 
 .PHONY: infrastructure
 infrastructure:
@@ -11,9 +12,13 @@ infrastructure:
 	ansible-playbook -i dynamic_inventory.py ssh_port_check.yaml
 	ansible-playbook -i dynamic_inventory.py volume_mount.yaml
 
+.PHONY: aws_output
+aws_output:
+	cd aws/
+	terraform output
+
 .PHONY: docker
 docker:
-#	ansible-playbook -i dynamic_inventory.py cert_creation.yaml -vv
 	ansible-playbook -i dynamic_inventory.py play_docker_install_role.yaml -vv
 
 .PHONY: jcasc
