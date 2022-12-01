@@ -1,30 +1,58 @@
 #!/bin/bash
 .ONESHELL:
 
-.PHONY: infrastructure
-infrastructure:
+.PHONY: aws
+aws:
 	ansible-playbook id_rsa_generating.yaml
+	cd aws/
 	terraform init
-	terraform apply --auto-approve -lock=false
-	terraform apply --auto-approve -lock=false
-	if [ ! -f ~/.vault_pass ]; then echo testpass > ~/.vault_pass; fi
+	terraform apply --auto-approve
+	cd ..
 	ansible-galaxy install -r requirements.yaml
-	ansible-playbook -i dynamic_inventory.py ssh_port_check.yaml
-	ansible-playbook -i dynamic_inventory.py volume_mount.yaml
+	ansible-playbook dockcomp_gen.yaml
+	ansible-playbook -i dynamic_inventory_aws.py main.yaml
+	make aws_output
+
+.PHONY: oci
+oci:
+	ansible-playbook id_rsa_generating.yaml
+	cd oci/
+	terraform init
+	terraform apply --auto-approve
+	cd ..
+	ansible-galaxy install -r requirements.yaml
+	ansible-playbook dockcomp_gen.yaml
+	ansible-playbook -i dynamic_inventory_oci.py main.yaml
+	make oci_output
 
 .PHONY: aws_output
 aws_output:
 	cd aws/
 	terraform output
 
-.PHONY: docker
-docker:
-	ansible-playbook -i dynamic_inventory.py play_docker_install_role.yaml -vv
+.PHONY: oci_output
+oci_output:
+	cd oci/
+	terraform output
 
-.PHONY: jcasc
-jcasc:
-	ansible-playbook dockcomp_gen.yaml
-	ansible-playbook -i dynamic_inventory.py jenkins_files_copy.yaml -vv
-	ansible-playbook -i dynamic_inventory.py jenkins_DC_up_build.yaml -vv
+.PHONY: aws_plan
+aws_plan:
+	cd	aws/
+	terraform init
+	terraform plan
 
-all: infrastructure docker jcasc
+.PHONY: oci_plan
+oci_plan:
+	cd	oci/
+	terraform init
+	terraform plan
+
+.PHONY: aws_destroy
+aws_destroy:
+	cd aws/
+	terraform destroy
+
+.PHONY: oci_destroy
+oci_destroy:
+	cd oci/
+	terraform destroy

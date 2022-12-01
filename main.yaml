@@ -1,0 +1,6 @@
+---
+#- import_playbook: volume_mount.yaml
+- import_playbook: ssh_port_check.yaml
+- import_playbook: play_docker_install_role.yaml
+- import_playbook: jenkins_files_copy.yaml
+- import_playbook: jenkins_DC_up_build.yaml

@@ -159,7 +159,7 @@ variable "from_port_redirect" {
 variable "to_port_redirect" {
   description = "ALB redirect to port"
   type        = string
-  default     = "433"
+  default     = "443"
 }
 
 variable "listener_port_http" {
@@ -182,27 +182,4 @@ variable "status_code" {
   description = "Status code response when redirection"
   type        = string
   default     = "HTTP_301"
-}
-
-variable "wait_for_validation" {
-  description = "Wait for certificate validation?"
-  type        = bool
-  default     = true
-}
-
-variable "create_route53_records" {
-  description = "Let the acm module to create route53 record"
-  type        = bool
-  default     = false
-}
-
-variable "evaluate_target_health" {
-  description = "Check the target health of the record"
-  type        = bool
-  default     = true
-}
-variable "record_type" {
-  description = "Type of DNS record"
-  type        = string
-  default     = "CNAME"
 }

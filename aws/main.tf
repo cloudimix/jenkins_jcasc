@@ -8,7 +8,7 @@ data "aws_route53_zone" "route53_zone" {
   name = var.d_name
 }
 
-data "aws_ami" "ubuntu_22_04_lst" {
+data "aws_ami" "ubuntu_lst" {
   most_recent = var.most_recent
   owners      = var.owners
   filter {
@@ -19,6 +19,11 @@ data "aws_ami" "ubuntu_22_04_lst" {
     name   = "virtualization-type"
     values = var.virtualization_type
   }
+}
+
+data "aws_acm_certificate" "tls" {
+  domain   = var.d_name
+  statuses = ["PENDING_VALIDATION", "ISSUED"]
 }
 
 resource "aws_default_subnet" "az_1" {
@@ -59,7 +64,7 @@ module "ec2_instance" {
   source                 = "terraform-aws-modules/ec2-instance/aws"
   version                = "~> 3.0"
   name                   = var.instance_name
-  ami                    = data.aws_ami.ubuntu_22_04_lst.id
+  ami                    = data.aws_ami.ubuntu_lst.id
   instance_type          = var.instance_type
   key_name               = aws_key_pair.jm_key.key_name
   monitoring             = var.monitoring
@@ -97,7 +102,7 @@ module "alb" {
     {
       port               = var.listener_port_https
       protocol           = var.listener_protocol_https
-      certificate_arn    = module.acm.acm_certificate_arn
+      certificate_arn    = data.aws_acm_certificate.tls.arn
       target_group_index = 0
     }
   ]
@@ -113,27 +118,4 @@ module "alb" {
       }
     }
   ]
-
-  depends_on = [module.acm]
-}
-module "acm" {
-  source                    = "terraform-aws-modules/acm/aws"
-  version                   = "~> 4.0"
-  domain_name               = var.d_name
-  zone_id                   = data.aws_route53_zone.route53_zone.zone_id
-  wait_for_validation       = var.wait_for_validation
-  subject_alternative_names = ["*.${var.d_name}"]
-  create_route53_records    = var.create_route53_records
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.route53_zone.zone_id
-  name    = var.d_name
-  type    = var.record_type
-
-  alias {
-    name                   = module.alb.lb_dns_name
-    zone_id                = module.alb.lb_zone_id
-    evaluate_target_health = var.evaluate_target_health
-  }
 }

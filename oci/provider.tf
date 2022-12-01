@@ -4,12 +4,6 @@ terraform {
       source = "oracle/oci"
     }
   }
-  cloud {
-    organization = "dimi"
-    workspaces {
-      name = "testWS"
-    }
-  }
 }
 
 provider "oci" {
