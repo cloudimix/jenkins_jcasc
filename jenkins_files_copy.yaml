@@ -1,6 +1,5 @@
 - name: JCasC installation
   hosts: all
-#  gather_facts: false
   become: yes
   tasks:
     - name: Copy JCasC to remote
