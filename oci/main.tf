@@ -13,9 +13,9 @@ module "compute-instance" {
   public_ip                   = "EPHEMERAL"
   public_ip_display_name      = "JPubIP"
   subnet_ocids                = [module.main_vcn.subnet_id["jsubnet"]]
-  block_storage_sizes_in_gbs  = [20]
-  boot_volume_size_in_gbs     = "50"
-  preserve_boot_volume        = true
+  #  block_storage_sizes_in_gbs  = [20]
+  boot_volume_size_in_gbs = "50"
+  preserve_boot_volume    = true
 }
 
 module "main_vcn" {

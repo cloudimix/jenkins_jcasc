@@ -6,10 +6,7 @@ jenkins_home: /var/jenkins_home
 dir_path: /home/{{ ansible_user }}/jenkins_home
 compose_path: ./JCasC/docker-compose.yml
 
-mounts:
-  - src: /dev/oracleoci/oraclevda
-    path: "{{ jenkins_home }}"
-
+#Docker role vars:
 docker_edition: 'ce'
 docker_packages:
     - "docker-{{ docker_edition }}"
