@@ -2,14 +2,11 @@
 ansible_user                 : ubuntu
 ansible_ssh_private_key_file : ~/.ssh/id_rsa
 
+jenkins_home: /var/jenkins_home
 dir_path: /home/{{ ansible_user }}/jenkins_home
 compose_path: ./JCasC/docker-compose.yml
-cert_key_path: /home/{{ ansible_user }}/.tls/
 
-mounts:
-  - src: /dev/oracleoci/oraclevda
-    path: /home/{{ ansible_user }}/jenkins_home
-
+#Docker role vars:
 docker_edition: 'ce'
 docker_packages:
     - "docker-{{ docker_edition }}"

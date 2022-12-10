@@ -21,10 +21,3 @@
         passno: 2
       with_items:
         - "{{ mounts }}"
-
-    - name: Chown for jenkins_home
-      file:
-        path: "{{ dir_path }}"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: 0777

@@ -5,7 +5,7 @@ import subprocess
 
 pattern = r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}"
 
-master_public_ip = re.findall(pattern, subprocess.run(["terraform", "output", "ARM_Master_public_ip"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
+master_public_ip = re.findall(pattern, subprocess.run(["make", "oci_output"], stdout=subprocess.PIPE).stdout.decode("utf-8"))
 
 inventory_pattern = { "hosts": master_public_ip }
 

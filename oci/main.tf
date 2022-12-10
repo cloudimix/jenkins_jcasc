@@ -2,19 +2,20 @@
 module "compute-instance" {
   source                      = "./modules/compute-instance"
   compartment_ocid            = var.compartment_ocid
-  ad_number                   = 1
+  ad_number                   = 2
   instance_count              = var.master_count
   instance_display_name       = "jenkins-master"
-  instance_flex_memory_in_gbs = "24"
-  instance_flex_ocpus         = "4"
+  instance_flex_memory_in_gbs = "12"
+  instance_flex_ocpus         = "2"
   shape                       = "VM.Standard.A1.Flex"
   source_ocid                 = var.instance-ARM_source_image_id
   ssh_public_keys             = file(var.id_rsa_pub)
   public_ip                   = "EPHEMERAL"
   public_ip_display_name      = "JPubIP"
   subnet_ocids                = [module.main_vcn.subnet_id["jsubnet"]]
-  block_storage_sizes_in_gbs  = [50]
-  boot_volume_size_in_gbs     = "50"
+  #  block_storage_sizes_in_gbs  = [20]
+  boot_volume_size_in_gbs = "50"
+  preserve_boot_volume    = true
 }
 
 module "main_vcn" {

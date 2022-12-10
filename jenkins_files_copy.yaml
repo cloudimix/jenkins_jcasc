@@ -1,20 +1,25 @@
 - name: JCasC installation
   hosts: all
-  gather_facts: false
-  become: no
+  become: yes
   tasks:
     - name: Copy JCasC to remote
       copy:
         src: ./JCasC
-        dest: /home/{{ ansible_user }}/
+        dest: "/home/{{ ansible_user }}"
 
-    - name: Ensures /home/{{ ansible_user }}/jenkins_home/jenkins_conf dir exists
+    - name: Ensures {{ jenkins_home }}/jenkins_conf dir exists
       file:
-        path: /home/{{ ansible_user }}/jenkins_home/jenkins_conf
-        mode: 0777
+        path: "{{ item }}"
+        mode: 0770
+        group: "{{ ansible_user }}"
+        owner: "{{ ansible_user }}"
+        recurse: true
         state: directory
+      with_items:
+        - "{{ jenkins_home }}"
+        - "{{ jenkins_home }}/jenkins_conf"
 
     - name: Copy conf to remote
       copy:
         src: ./JCasC/master/jenkins.yaml
-        dest: /home/{{ ansible_user }}/jenkins_home/jenkins_conf/jenkins.yaml
+        dest: "{{ jenkins_home }}/jenkins_conf/jenkins.yaml"
