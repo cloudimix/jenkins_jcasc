@@ -26,7 +26,7 @@ jenkins:
   globalNodeProperties:
   - envVars:
       env:
-      - key: "JF_REPO"
+      - key: "CASC_REPO"
         value: "https://github.com/cloudimix/jenkins_jcasc.git"
   labelAtoms:
   - name: "built-in"
