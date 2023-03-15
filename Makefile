@@ -1,6 +1,14 @@
 #!/bin/bash
 .ONESHELL:
 
+ISSUE_NUMBER=""
+
+.PHONY: branch
+branch:
+	cd jenkins_jcasc/
+	git pull
+	git checkout -b feature/quota-increase-${ISSUE_NUMBER}
+
 .PHONY: aws
 aws:
 	ansible-playbook id_rsa_generating.yaml
